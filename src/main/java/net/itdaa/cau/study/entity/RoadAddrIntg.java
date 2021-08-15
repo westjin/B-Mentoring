@@ -12,10 +12,9 @@ import javax.persistence.Table;
 @Table(name="ROAD_ADDR_INTG")
 public class RoadAddrIntg {
 
-
     @Id
-    @Column(name = "NO")
-    private Integer no;
+    @Column(name = "MGR_NO")
+    private String mgrNO;
 
     @Column(name = "SIDO_NAME")
     private String sidoName;
@@ -27,10 +26,10 @@ public class RoadAddrIntg {
     private String roadName;
 
     @Column(name = "BLDG_MAIN_NO")
-    private String bldgMainNo;
+    private Integer bldgMainNo;
 
     @Column(name = "BLDG_SUB_NO")
-    private String bldgSubNo;
+    private Integer bldgSubNo;
 
     @Column(name = "CONST_BLDG_NAME")
     private String constBldgName;
