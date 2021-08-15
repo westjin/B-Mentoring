@@ -18,7 +18,7 @@ import java.util.Set;
 public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("CAU Study")
+        return new ApiInfoBuilder().title("Java Backend Hands-on (By Itdaa & CAU)")
                 .description("Description")
                 .version("1.0")
                 .build();
