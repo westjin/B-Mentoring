@@ -117,11 +117,11 @@ public class RoadAddrApiController {
             returnMap.put(resRoadAddr, "");                   // return 주소정보는 빈 값을 넣습니다.
             returnMap.put(resCnt, 0);                         // return 건수정보는 0 건으로 넣습니다.
         }
-
+        // 예외여부 상관없이 최종적으로 수행.
         finally {
             entity = new ResponseEntity<>(returnMap, resultStatus);  // 최종적으로 API 결과 ResponseEntity 객체를 생성합니다.
-        }
 
-        return entity;  // API 반환.
+            return entity;  // API 반환.
+        }
     }
 }
