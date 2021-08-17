@@ -15,6 +15,9 @@ import java.util.Set;
 
 @Configuration
 @EnableSwagger2
+/**
+ * Swagger-Ui 사용을 위한 설정을 담당하는 클래스
+ */
 public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
