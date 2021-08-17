@@ -14,27 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Slf4j
-@RestController
+@Slf4j                   // logging 처리
+@RestController          // RestAPI Controller
 @RequestMapping("/api")  // API 를 호출하기 위한 주소 값입니다. 예: http://localhost:8080/api)
 public class RoadAddrApiController {
 
-    static final String resMsg       = "resMsg";
-    static final String resRoadAddr  = "roadAddr";
-    static final String resCnt       = "roadAddrCnt";
+    static final String RES_MESSAGE             = "resMsg";
+    static final String RES_ROAD_ADDR           = "roadAddr";
+    static final String RES_ROAD_ADDR_CNT       = "roadAddrCnt";
 
-    ResponseEntity<?> entity = null;
-
+    //JPA 를 통해 Controller 에서 DB Repository 객체 사용을 위한 객체입니다.
     @Autowired
     RoadAddrRepository roadAddrRepository;
 
+    //RestAPI 응답 처리를 위한 객체 입니다.
+    ResponseEntity<?> entity;
+
     @ApiOperation(value="조회할 도로명 주소(전체 or 일부)", notes="(도로명 주소의 일부 정보 or 정확한 주소)로 해당하는 도로명주소를 조회합니다.")
-    @GetMapping(value="/roadAddr")  // API 를 호출하기 위한 주소 값이며 상위 주소의 하위주소값입니다. 예: http://localhost:8080/api/roadAddr)
+    @GetMapping(value="/roadAddr")  // GET 방식으로 API 를 호출하기 위한 주소 값이며 상위 주소의 하위주소값입니다. 예: http://localhost:8080/api/roadAddr)
     @ApiImplicitParams({
            @ApiImplicitParam(name = "searchRoadAddr", value = "검색할 도로명", required = true, dataType = "String", defaultValue = ""),
            @ApiImplicitParam(name = "searchRoadAddrBldgNumber", value = "검색할 빌딩명", required = false, dataType = "String", defaultValue = "")
@@ -43,8 +42,10 @@ public class RoadAddrApiController {
                                         ,@RequestParam(value = "searchRoadAddrBldgNumber", required = false)  String searchBldgNumber) {
 
 
-        Integer buildingMainNumber = 0;      // DB에 조회하기 위한 도로명주소 건물본번
-        Integer buildingSubNumber = 0;       // DB에 조회하기 위한 도로명주소 건물부번
+        int searchResultListSize = 0;        // DB에서 도로명주소를 조회한 결과 리스트의 크기.
+
+        Integer buildingMainNumber;      // DB에 조회하기 위한 도로명주소 건물본번
+        Integer buildingSubNumber;       // DB에 조회하기 위한 도로명주소 건물부번
 
         HttpStatus resultStatus = HttpStatus.OK;   // 기본적으로 정상적으로 조회가 된다는 가정하에 반환하는 HTTP Status 값은 200 (OK) 입니다.
 
@@ -61,52 +62,37 @@ public class RoadAddrApiController {
              2-3. 만약 searchBldgNumber 가 입력되고, 그 값에 '-' 이 포함되면 '건물 본번 - 건물 부번' 인 형태입니다.
              */
             // searchBldgNumber null 이 아니면 건물번호가 입력된 것 입니다.
-            if (searchBldgNumber != null) {
+            // 건물번호가 입력되었다면 본번만 입력된것인지, 부번도 같이 입력된 것인지 확인해서 처리해야 합니다.
+            if (!Objects.isNull(searchBldgNumber)) {   // searchBldgNumber != null
 
-                // 건물번호가 본번 형태인지 부번 형태인지 '-' 을 기준으로 확인해야 합니다.
-                String[] bldgNumberArray = searchBldgNumber.trim().split("-");
+                // 건물번호가 본번 형태인지 부번 형태인지 입력된 searchBldgNumber 에 '-' 을 기준으로 확인해야 합니다.
 
-                // 건물번호가 본번만 입력된 형태라면 (예 : 흑석로 84)
-                if (bldgNumberArray.length == 1) {
+                    // 건물번호가 본번만 입력된 형태라면 (예 : 흑석로 84)
 
                     // 건물번호가 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
-                    buildingMainNumber = Integer.parseInt(searchBldgNumber.trim());
 
-                    // 도로명 검색어를 Like 로 하여 건물번호가 일치하는 도로명 주소를 찾습니다.
-                    searchResultList = roadAddrRepository.findByRoadNameStartingWithAndBldgMainNo(searchRoadAddress, buildingMainNumber);
-
-                }
                 // 건물번호가 본번,부번 모두 입력된 형태라면 (예 : 흑석로 84-116)
-                else if (bldgNumberArray.length == 2) {
 
                     // 건물번호(본번/부번)이 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
-                    buildingMainNumber = Integer.parseInt(bldgNumberArray[0]);
-                    buildingSubNumber = Integer.parseInt(bldgNumberArray[1]);
 
                     // 도로명 검색어를 = 로 하여 건물본번, 건물부번 모두가 일치하는 도로명 주소를 찾습니다.
-                    searchResultList = roadAddrRepository.findByRoadNameAndBldgMainNoAndBldgSubNo(searchRoadAddress, buildingMainNumber, buildingSubNumber);
-                }
+
             }
             // searchBldgNumber null 이면 도로명 검색어만 입력된 것입니다.
             else {
 
                 // 도로명 검색어를 Like 로 하여 도로명 주소를 찾습니다.
                 searchResultList = roadAddrRepository.findByRoadNameStartingWith(searchRoadAddress);
-
             }
-
-            int searchResultListSize = searchResultList.size(); // 최종적으로 DB에서 도로명 주소를 찾은 결과의 갯수
 
             // 도로명 주소가 검색된 결과가 없다면.
             if (searchResultListSize == 0) {
                 resultStatus = HttpStatus.NOT_FOUND; // HTTP Status 코드는 NOT_FOUND 로 합니다. (404)
             }
 
-
-
-            returnMap.put(resMsg, "정상처리되었습니다.");    // return 메세지는 "정상" 으로 하고
-            returnMap.put(resRoadAddr, searchResultList);  // return 주소정보는 조회 결과를 넣습니다.
-            returnMap.put(resCnt, searchResultListSize); // return 건수정보는 조회 결과의 건수를 넣습니다.
+            returnMap.put(RES_MESSAGE, "정상처리되었습니다.");    // return 메세지는 "정상" 으로 하고
+            returnMap.put(RES_ROAD_ADDR, searchResultList);  // return 주소정보는 조회 결과를 넣습니다.
+            returnMap.put(RES_ROAD_ADDR_CNT, searchResultListSize); // return 건수정보는 조회 결과의 건수를 넣습니다.
 
             throw new Exception();
         }
@@ -116,9 +102,9 @@ public class RoadAddrApiController {
             log.error(e.getMessage()); // 오류 내용을 로그로 남깁니다.
 
             resultStatus = HttpStatus.SERVICE_UNAVAILABLE;    // HTTP Status 코드는 SERVICE_UNAVAILABLE 로 합니다. (503)
-            returnMap.put(resMsg, "오류가 발생하였습니다.");      // return 메세지는 "오류발생" 으로 하고
-            returnMap.put(resRoadAddr, "");                   // return 주소정보는 빈 값을 넣습니다.
-            returnMap.put(resCnt, 0);                         // return 건수정보는 0 건으로 넣습니다.
+            returnMap.put(RES_MESSAGE, "오류가 발생하였습니다.");      // return 메세지는 "오류발생" 으로 하고
+            returnMap.put(RES_ROAD_ADDR, "");                   // return 주소정보는 빈 값을 넣습니다.
+            returnMap.put(RES_ROAD_ADDR_CNT, 0);                         // return 건수정보는 0 건으로 넣습니다.
         }
         // 예외여부 상관없이 최종적으로 수행.
         finally {
