@@ -51,6 +51,8 @@ public class RoadAddrApiController {
         List<RoadAddress> searchResultList = new ArrayList<>();  // DB 조회 후 값이 있을 경우 RoadAddress 객체의 값 List 입니다.
         Map<String,Object> returnMap = new HashMap<>();          // 실제 API Return 되는 값이 들어가는 Map 객체 입니다.
 
+        int searchResultListSize = 0; // 최종적으로 DB에서 도로명 주소를 찾은 결과의 갯수
+
         // 실행중 예외발생을 탐지하기 위하여
         try {
             /**
@@ -95,7 +97,7 @@ public class RoadAddrApiController {
 
             }
 
-            int searchResultListSize = searchResultList.size(); // 최종적으로 DB에서 도로명 주소를 찾은 결과의 갯수
+            searchResultListSize = searchResultList.size(); // 최종적으로 DB에서 도로명 주소를 찾은 결과의 갯수
 
             // 도로명 주소가 검색된 결과가 없다면.
             if (searchResultListSize == 0) {
