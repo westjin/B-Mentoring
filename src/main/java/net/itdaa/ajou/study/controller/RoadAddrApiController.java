@@ -1,11 +1,11 @@
-package net.itdaa.cau.study.controller;
+package net.itdaa.ajou.study.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.itdaa.cau.study.entity.RoadAddress;
-import net.itdaa.cau.study.repository.RoadAddrRepository;
+import net.itdaa.ajou.study.entity.RoadAddress;
+import net.itdaa.ajou.study.repository.RoadAddrRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

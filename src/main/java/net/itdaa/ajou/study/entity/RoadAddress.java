@@ -1,4 +1,4 @@
-package net.itdaa.cau.study.entity;
+package net.itdaa.ajou.study.entity;
 
 /**
  * 실제 RestAPI 에 응답으로 전달되는 도로명 주소

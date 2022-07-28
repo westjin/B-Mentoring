@@ -1,4 +1,4 @@
-package net.itdaa.cau.study;
+package net.itdaa.ajou.study;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

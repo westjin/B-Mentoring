@@ -1,4 +1,4 @@
-package net.itdaa.cau.study.config;
+package net.itdaa.ajou.study.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

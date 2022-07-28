@@ -1,7 +1,7 @@
-package net.itdaa.cau.study.repository;
+package net.itdaa.ajou.study.repository;
 
-import net.itdaa.cau.study.entity.RoadAddrIntg;
-import net.itdaa.cau.study.entity.RoadAddress;
+import net.itdaa.ajou.study.entity.RoadAddrIntg;
+import net.itdaa.ajou.study.entity.RoadAddress;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

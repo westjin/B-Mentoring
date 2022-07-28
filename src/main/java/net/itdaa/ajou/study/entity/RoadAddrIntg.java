@@ -1,4 +1,4 @@
-package net.itdaa.cau.study.entity;
+package net.itdaa.ajou.study.entity;
 
 import lombok.Data;
 
