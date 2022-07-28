@@ -37,7 +37,7 @@ public class RoadAddrApiController {
     @GetMapping(value="/roadAddr")  // API 를 호출하기 위한 주소 값이며 상위 주소의 하위주소값입니다. 예: http://localhost:8080/api/roadAddr)
     @ApiImplicitParams({
            @ApiImplicitParam(name = "searchRoadAddr", value = "검색할 도로명", required = true, dataType = "String", defaultValue = ""),
-           @ApiImplicitParam(name = "searchRoadAddrBldgNumber", value = "검색할 빌딩명", required = false, dataType = "String", defaultValue = "")
+           @ApiImplicitParam(name = "searchRoadAddrBldgNumber", value = "검색할 빌딩본번-빌딩부번", required = false, dataType = "String", defaultValue = "")
     })
     public ResponseEntity<?> getRoadAddr(@RequestParam(value = "searchRoadAddr") String searchRoadAddress
                                         ,@RequestParam(value = "searchRoadAddrBldgNumber", required = false)  String searchBldgNumber) {
@@ -110,12 +110,13 @@ public class RoadAddrApiController {
             returnMap.put(resRoadAddr, searchResultList);  // return 주소정보는 조회 결과를 넣습니다.
             returnMap.put(resCnt, searchResultListSize); // return 건수정보는 조회 결과의 건수를 넣습니다.
 
-            throw new Exception();
+//            throw new Exception();
         }
         // 실행중 예외가 발생할 경우
         catch (Exception e) {
 
             log.error(e.getMessage()); // 오류 내용을 로그로 남깁니다.
+            e.printStackTrace();
 
             resultStatus = HttpStatus.SERVICE_UNAVAILABLE;    // HTTP Status 코드는 SERVICE_UNAVAILABLE 로 합니다. (503)
             returnMap.put(resMsg, "오류가 발생하였습니다.");      // return 메세지는 "오류발생" 으로 하고
