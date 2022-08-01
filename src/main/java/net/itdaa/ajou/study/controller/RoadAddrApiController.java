@@ -69,7 +69,7 @@ public class RoadAddrApiController {
                 String[] bldgNumberArray = searchBldgNumber.trim().split("-");
 
                 // 건물번호가 본번만 입력된 형태라면 (예 : 흑석로 84)
-                if (bldgNumberArray.length == 1) {
+                if (bldgNumberArray.length == ??) {
 
                     // 건물번호가 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
                     buildingMainNumber = Integer.parseInt(searchBldgNumber.trim());
@@ -79,7 +79,7 @@ public class RoadAddrApiController {
 
                 }
                 // 건물번호가 본번,부번 모두 입력된 형태라면 (예 : 흑석로 84-116)
-                else if (bldgNumberArray.length == 2) {
+                else if (bldgNumberArray.length == ??) {
 
                     // 건물번호(본번/부번)이 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
                     buildingMainNumber = Integer.parseInt(bldgNumberArray[0]);
@@ -100,7 +100,7 @@ public class RoadAddrApiController {
             searchResultListSize = searchResultList.size(); // 최종적으로 DB에서 도로명 주소를 찾은 결과의 갯수
 
             // 도로명 주소가 검색된 결과가 없다면.
-            if (searchResultListSize == 0) {
+            if (searchResultListSize == ??) {
                 resultStatus = HttpStatus.NOT_FOUND; // HTTP Status 코드는 NOT_FOUND 로 합니다. (404)
             }
 
