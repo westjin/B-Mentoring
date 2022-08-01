@@ -66,10 +66,10 @@ public class RoadAddrApiController {
             if (searchBldgNumber != null) {
 
                 // 건물번호가 본번 형태인지 부번 형태인지 '-' 을 기준으로 확인해야 합니다.
-                String[] bldgNumberArray = searchBldgNumber.trim().split("-");
+                String[] bldgNumberArray = ??;
 
                 // 건물번호가 본번만 입력된 형태라면 (예 : 흑석로 84)
-                if (bldgNumberArray.length == ??) {
+                if (bldgNumberArray.length == 1) {
 
                     // 건물번호가 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
                     buildingMainNumber = Integer.parseInt(searchBldgNumber.trim());
@@ -82,7 +82,7 @@ public class RoadAddrApiController {
                 else if (bldgNumberArray.length == ??) {
 
                     // 건물번호(본번/부번)이 문자로 되어 있으므로 숫자로 바꿔야 합니다. (DB는 숫자컬럼으로 되어 있음)
-                    buildingMainNumber = Integer.parseInt(bldgNumberArray[0]);
+                    buildingMainNumber = ??;
                     buildingSubNumber = Integer.parseInt(bldgNumberArray[1]);
 
                     // 도로명 검색어를 = 로 하여 건물본번, 건물부번 모두가 일치하는 도로명 주소를 찾습니다.
@@ -107,7 +107,7 @@ public class RoadAddrApiController {
 
 
             returnMap.put(resMsg, "정상처리되었습니다.");    // return 메세지는 "정상" 으로 하고
-            returnMap.put(resRoadAddr, searchResultList);  // return 주소정보는 조회 결과를 넣습니다.
+            returnMap.put(resRoadAddr, ??);  // return 주소정보는 조회 결과를 넣습니다.
             returnMap.put(resCnt, searchResultListSize); // return 건수정보는 조회 결과의 건수를 넣습니다.
 
 //            throw new Exception();
